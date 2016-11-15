@@ -1,229 +1,72 @@
-/**
- *
- * Created by macdja38 on 2016-01-01.
- */
-"use strict";
 /*
- this bot is a permissions bot and is currently working
- with the experimental additions. Some functions may
- change in the future.
- */
+Welcome To Your New "Easy" Discord Bot "Template"
+This bot template was created by yor one and only ExoTeam
 
-var Discord = require("discord.js");
-var now = require("performance-now");
-var exec = require("child_process").exec;
+Main Workers
+Deboss
+TH3B3AST87
+and I guess Second 
 
-var Configs = require("./lib/config.js");
-var config = new Configs("config");
+please do not claim this code as your own please give us credit for the template we did work very hard to make this template for you newbies / newbetts 
+now if your are a more advanced bot coder yo may already know these things but we still decided to make this for any one to use
+please if you are new to JavaScript please goto (https://www.codecademy.com/learn/javascript) and take some time to learn what the funcions mean
+if you already know the basic's well feel free to go and read the rest of the notes we left for you but wait
+please understand if we tell you that you can only do a certain thing it will be for a good cause like for the prefix
+it must be a 2 char prefix this reasoning is for the eval command but if ur a advanced coder u will already know how to make it more or less chars
 
-var AuthDetails = require("./auth.json");
 
-// Get the email and password
-//var AuthDetails = require("auth.json");
+sorry about that book i just wrote for u guys just want you to understand
+anyways here is basic info 
 
-//these are global variables you can use within eval statements for whatever.
-var v1;
-var v2;
-var v3;
+Discord.JS Version 10.0 #indev
+Refference's : http://hydrabolt.github.io/discord.js/#!/docs/tag/master/file/general/Welcome
+Our Official Discord Server: https://discord.gg/FJQKjwa  and under the #support area is where ur going to find us / get help
+*/
 
-var hasConnected = false;
-
-var bot = new Discord.Client({forceFetchUsers: true, autoReconnect: true, bot: false});
-//increase compatibility with other users code when using eval.
-var client = bot;
-
-bot.on("ready", function () {
-    bot.setStatusIdle();
-    if (!hasConnected) {
-        console.log("Ready to begin! Serving in " + bot.channels.length + " channels");
-        console.log("users: " + bot.users.length);
-        hasConnected = true;
-    } else {
-        console.error("Reconnected Successfully")
-    }
+const Discord = require('discord.js'); //common sense
+const bot = new Discord.Client(); //common sense
+const token = 'YourBotTokenHere'; // your bot client token here
+var userid = 'your account id here' // if you dont know what this means just mention yourself like this \@All Knowing Deboss#8272 
+var pfx = '!!' // NOTE you can change it (the prefix) but the prefix must be 2 char's long
+bot.on('ready', () => {
+    console.log('I am ready to be used papi!');
+    bot.user.setGame(`Succ Me Daddy`) // change `Succ Me Daddy` to what you want EXAMPLE `I Am Currently In ${bot.guilds.size}`
 });
 
-bot.on("disconnected", function () {
-    console.error("Disconnected!");
+bot.on('reconnecting', () => {
+    console.log('my batteries ended need to change them and join the figth back'); // :3 test with this and u will understand
 });
 
-bot.on('serverNewMember', (server, user)=> {
-    console.log(user.username + " joined " + server.name);
-    if (config.get("welcome", {enable: false}).enable && config.get("welcome", {servers: []}).servers.indexOf(server.id)>-1) {
-        console.log("Welcoming is enabled and this server is on the list");
-        /* this won't work because the bot can't tell if it's online.
-         if(config.get("welcome", {onlyWhenOnline:true}).onlyWhenOnline) {
-         console.log("Master is" + bot.user.status);
-         if(bot.user.status != "online") {
-         return;
-         }
-         }
-         console.log("Bots master is online");
-         */
-        var messages = config.get("welcome", {
-            messages: ["Welcome **$user**!"]
-        }).messages;
-        var min = config.get("welcome", {minDelay: 3}).minDelay;
-        var max = config.get("welcome", {maxDelay: 20}).maxDelay;
-        var typingInterval = config.get("welcome", {typingInterval: 3}).typingInterval;
-        var msgDelay = Math.floor(Math.random() * (max - min)) + min;
-        console.log("Welcoming in " + msgDelay + "s");
-        if (msgDelay > typingInterval + 2) {
-            console.log("Will pretend to type.");
-            setTimeout(()=> {
-                console.log("Started Tying");
-                bot.startTyping(server.general);
-            }, (msgDelay - typingInterval) * 1000);
-            setTimeout(()=> {
-                console.log("Stopped Typing");
-                bot.stopTyping(server.general);
-            }, (msgDelay) * 1000);
-            //just in case one of the other possible things that stop it don't stop it
-            setTimeout(()=> {
-                console.log("Stopped Typing just in case");
-                bot.stopTyping(server.general);
-            }, (msgDelay + 10) * 1000);
-        }
-        setTimeout(()=> {
-            bot.sendMessage(
-                server.general,
-                clean(messages[Math.floor(Math.random() * messages.length)]
-                    .replace(/\$server/g, server.name).replace(/\$user/g, user.username))
-            );
-        }, msgDelay * 1000
-        )
-    }
-});
-
-bot.on("message", function (msg) {
-    /*if (msg.content === "!!wherearewe" && msg.channel.isPrivate && msg.author.id == bot.user.id) {
-     var servlist = "";
-     for (var serv of bot.servers) {
-     console.log(msg.channel.recipient);
-     for (var users of serv.members) {
-     if (msg.channel.recipient.id == users.id) {
-     servlist += serv.name + ", ";
-     }
-     }
-     }
-     bot.reply(msg, servlist);
-     }*/
-    if (msg.author.id === bot.user.id) {
-        if (msg.content.indexOf("eval ") == 0) {
-            (function () {
-                var t0;
-                var t1;
-                var code = msg.content.slice(5);
-                var client = bot;
-                //noinspection UnnecessaryLocalVariableJS
-                var message = msg;
-                //should simplify some commands.
-                var server = message.channel.server;
-                var channel = msg.channel;
-                t0 = now();
-                try {
-                    var evaled = eval(code);
-                    t1 = now();
-                    if (evaled) {
-                        if (evaled.length >= 2000) {
-                            evaled = evaled.substr(evaled.length - 1000, evaled.length)
-                        }
-                    }
-                    bot.updateMessage(msg, "```xl\n" +
-                        clean(code) +
-                        "\n- - - - - - evaluates-to- - - - - - -\n" +
-                        clean(evaled) +
-                        "\n- - - - - - - - - - - - - - - - - - -\n" +
-                        "In " + (t1 - t0) + " milliseconds!\n```");
-                    console.log(evaled);
+bot.on('message', message => {
+            console.log(`${message.author.username}| ${message.channel.name} | ${message.guild ? message.guild.name : 'PM'} | ${message.content}`) //this is for message logs
+            if (message.content === pfx + 'restart') {
+                if (message.author.id === userid) {
+                    message.channel.sendMessage('I Am Now Going To Restart').then(() => process.exit(1))
                 }
-                catch (error) {
-                    t1 = now();
-                    bot.updateMessage(msg, "```xl\n" +
-                        clean(code) +
-                        "\n- - - - - - - errors-in- - - - - - - \n" +
-                        clean(error) +
-                        "\n- - - - - - - - - - - - - - - - - - -\n" +
-                        "In " + (t1 - t0) + " milliseconds!\n```");
-                    console.error(error);
-                }
-            })();
-            return;
-        }
-        if (msg.content.indexOf("exec ") == 0) {
-            (function () {
-                var code = msg.content.slice(5);
-                var t0 = now();
-                exec(code, (error, stdout, stderr) => {
-                    var t1 = now();
-                    if (!error) {
-                        if (stdout) {
-                            if (stdout.length > 1300) {
-                                stdout = stdout.substr(stdout.length - 1299, stdout.length)
-                            }
-                        }
-                        bot.updateMessage(msg, "```xl\n" +
-                            clean(code) +
-                            "\n- - - - - - evaluates-to- - - - - - -\n" +
-                            clean(stdout) +
-                            "- - - - - - - - - - - - - - - - - - -\n" +
-                            "In " + (t1 - t0) + " milliseconds!\n```");
-                        console.log(stdout);
-                    }
-                    else {
-                        bot.updateMessage(msg, "```xl\n" +
-                            clean(code) +
-                            "\n- - - - - - - errors-in- - - - - - - \n" +
-                            clean(stderr) +
-                            "- - - - - - - - - - - - - - - - - - -\n" +
-                            "In " + (t1 - t0) + " milliseconds!\n```");
-                        console.error(stderr);
-                    }
-                });
-            })();
-            return;
-        }
-        if (msg.content.toLowerCase().indexOf("setwelcome ") == 0) {
-            try {
-                console.log("Changing welcome state.");
-                var arg = msg.content.split(" ");
-                if (arg.length > 1) {
-                    arg = arg[1];
-                    if (arg == "true" || arg == "false") {
-                        if (config.data && config.data.welcome) {
-                            config.data.welcome.enable = arg == "true";
-                            config.save();
-                            bot.updateMessage(msg, "Success");
-                            console.log("Saved config.")
-                        } else {
-                            msg.reply("config entry found");
-                        }
-                    }
-                    else {
-                        msg.reply("`setWelcome <true|false>`")
-                    }
-                } else {
-                    msg.reply("`setWelcome <true|false>`")
-                }
-            } catch (error) {
-                console.error(error);
-                bot.updateMessage(msg, error + "Check logs for a detailed explanation");
             }
+            if (message.content.includes('wew')) {
+                if (message.author.bot) return;
+                message.channel.sendMessage(`lad`);
+            }
+            if (message.content.startsWith(pfx + `eval`)) {
+
+                message.content = message.content.substring(7)
+                if (message.author.id === userid)
+                    var code = message.content
+                if (!code.length) return message.reply(`Add some code there`);
+                try {
+                    const output = eval(code);
+                    message.channel.sendMessage(
+                            `\`INPUT:\`\n\`\`\`${code.replace(/`/g, '"')}\`\`\`\n\`OUTPUT:\`\n\`\`\`${typeof output === 'object' ? JSON.stringify(output) : output}\`\`\``
+            );
+        } catch(err) {
+            message.channel.sendMessage(`\`INPUT:\`\n\`\`\`${code.replace(/`/g, '"')}\`\`\`\n\`ERROR:\`\n\`\`\`${err}\`\`\``);
         }
     }
-});
-
-function clean(text) {
-    if (typeof(text) === "string") {
-        return text.replace(/``/g, "`" + String.fromCharCode(8203) + "`").replace(/@/g, "@" + String.fromCharCode(8203));
-    }
-    else {
-        return text.toString().replace(/``/g, "`" + String.fromCharCode(8203) + "`").replace(/@/g, "@" + String.fromCharCode(8203))
-    }
-}
-
-bot.loginWithToken(AuthDetails.jake.token, (error)=> {
-    if (error !== null) {
-        console.error(error);
+    if (message.content.includes('python' || 'Python' || 'PYTHON')) {
+                if (message.author.bot) return;
+                message.channel.sendMessage(`Rip That Guy`);
     }
 });
+
+bot.login(token); //common sense
