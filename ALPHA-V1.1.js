@@ -47,8 +47,10 @@ if (message.content.startsWith(pfx + `eval`)) {
     if (!code.length) return message.reply(`Add some code there`);
     try {
         const output = eval(code);
-        message.channel.sendMessage(
-            `\`INPUT:\`\n\`\`\`${code.replace(/`/g, '"')}\`\`\`\n\`OUTPUT:\`\n\`\`\`${typeof output === 'object' ? JSON.stringify(output) : output}\`\`\``
+        message.channel.sendCode('js', `INPUT:
+${code.replace(/`/g, '"')}
+OUTPUT:
+${typeof output === 'object' ? JSON.stringify(output) : output}`
         );
     } catch(err) {
         message.channel.sendMessage(`\`INPUT:\`\n\`\`\`${code.replace(/`/g, '"')}\`\`\`\n\`ERROR:\`\n\`\`\`${err}\`\`\``);
