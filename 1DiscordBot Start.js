@@ -12,8 +12,7 @@ const bot = new Discord.Client(); //common sense
 // Bot Token and Your UserID + Bot Prefix
 const token = 'YourBotTokenHere'; // your bot client token here
 var userid = 'your account id here' // if you dont know what this means just mention yourself like this \@All Knowing Deboss#8272
-var pfx = '!!' // NOTE you can change it (the prefix) but the prefix must be 2 char's long
-
+var pfx = '!!' // NOTE if u want ur prefix to have a space like     drift{SPACE}command add a space after it like    `drift `
 // NPM'S UNDER HERE
 
 
